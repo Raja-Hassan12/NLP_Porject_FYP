@@ -1,0 +1,26 @@
+pip install "pvleopard>=1.1"     #First you have to install this library
+
+import pvleopard
+access_key = "lQEYPid6w2cWEBAQfdx8BVCpo4fbXu9NvnuZjDGqHwoDVeDT5z86QA=="     #The access key can be generated from picovoice website fo free, this is my generated access key.
+leopard = pvleopard.create(access_key=access_key)
+
+audio_path = r"C:\Users\Kashif\Desktop\FYP\Sample.wav"       #Here you will give the audio path of the respective file that you want to convert into texts, this is my audio path of the file. 
+transcript, words = leopard.process_file(audio_path)         # Here 'transcript' variable store the full converted text and 'words' variable store the starting, ending and confidence of the specific word in the text.
+
+def Breaktext():
+    for i in range(len(words)-1):            #This method breaks the text into sentence, assuming when the 1 second silence occurs between two words, it breaks them.
+        print(words[i][0], end =" ")
+    
+        if(abs(words[i][1] - words[i+1][1])) > 1 :
+            print()
+            
+            
+            
+def Samplebreak():                   # Here this is just a sample method which will clear your concept of how the text is break into sentence.
+    for i in range(40):
+        print(words[i][0], end =" ")
+        print('       Starting time : ',words[i][1])
+    
+        if(abs(words[i][1] - words[i+1][1])) > 1 :
+            print('=====break======')
+    
