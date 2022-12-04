@@ -1,0 +1,13 @@
+from textblob import TextBlob
+
+blob = TextBlob(txtenglish)   # txtenglish is the variable where we have stored our textual data
+sentiment = blob.sentiment     
+print(sentiment) 
+
+
+wrong_sentence = TextBlob('eneving')    #This is the example of text correction, we can pass here our incorrect sentence and correct it.
+correction = wrong_sentence.correct()
+correction
+
+wrong_sentence.words[0].spellcheck() # This generates a list of all the possible correction of an incorrect word with a confidence percentage.
+
