@@ -1,0 +1,91 @@
+RUN ALL CODES IN SEQUENCE
+
+string that we pass
+
+hassan= "Just just just just give an unknown unknown fear of losing fear of people so i wrote down one by one all those years and i decided that i am going to overcome these fears one at a time you know what was my biggest fear but the day i decided that this is nothing but my dear i liberated myself by setting a tree and i made myself emotionally so strong that they are you got the news that you're getting married i send text so happy for you and wish you all the best and know that i pray for him was i won't be able to be a mother and i was fighting for me but they realise there are so many children in the world of the what is acceptance is no point of crying just go and adopt one and that's what i did you be surprised to know another behaviour that i had to me it was facing people are used to hide myself i was on bed with 2 years are used to keep the door closed are used to pretend that i am not going to meet anyone tell you that i am sleeping you know why because i couldn't stand the sympathy that they had for me to use to treat me like a fish what are you smile i used it means that i was tired of this question as well besides didn't really i am fine again and i am here speaking to all these amazing people because i have overcome with rear end up being on the future what's the most painful thing people think that there will not be accepted by the people because we in the world of perfect people are in perfect so i decided that is just starting in ngo for disability awareness which i know will not help anyone i started to appear more in public i decided i am going to join the national tv of pakistan and i became the national goodwill ambassador to un women pakistan i was featured in bbc 104 2015 30 under 30 2016 so when you accept yourself the way you are recognised. "
+
+# importing required libraries 
+import nltk
+nltk.download('stopwords')
+nltk.download('wordnet')
+from nltk.corpus import stopwords 
+from nltk.stem.wordnet import WordNetLemmatizer
+import string
+
+
+# preparation of dataset
+doc1 = hassan
+#doc2 = "My father spends a lot of time driving my sister around to dance practice."
+#doc3 = "Doctors suggest that driving may cause increased stress and blood pressure."
+#doc4 = "Sometimes I feel pressure to perform well at school, but my father never seems to drive my sister to do better."
+#doc5 = "Health experts say that Sugar is not good for your lifestyle."
+
+# compile documents
+doc_complete = [doc1]
+
+print('\n\nData\n\n')
+print(doc_complete)
+
+# set of stopwords
+stop = set(stopwords.words('english'))
+exclude = set(string.punctuation) 
+lemma = WordNetLemmatizer()
+
+def clean(doc):
+    stop_free = " ".join([i for i in doc.lower().split() if i not in stop])
+    punc_free = ''.join(ch for ch in stop_free if ch not in exclude)
+    normalized = " ".join(lemma.lemmatize(word) for word in punc_free.split())
+    return normalized
+  
+doc_clean = [clean(doc).split() for doc in doc_complete]    
+
+
+print('\n\nCleaned Data\n\n')
+print(doc_clean)
+
+
+# Importing Gensim
+import gensim
+from gensim import corpora
+
+# Creating the term dictionary of our courpus, where every unique term is assigned an index. dictionary = corpora.Dictionary(doc_clean)
+dictionary = corpora.Dictionary(doc_clean)
+# Converting list of documents (corpus) into Document Term Matrix using dictionary prepared above.""
+doc_term_matrix = [dictionary.doc2bow(doc) for doc in doc_clean]
+
+# Creating the object for LDA model using gensim library
+Lda = gensim.models.ldamodel.LdaModel
+
+# Running and Trainign LDA model on the document term matrix.
+ldamodel = Lda(doc_term_matrix, num_topics=1, id2word = dictionary, passes=50)
+
+
+print(ldamodel.print_topics(num_topics=0, num_words=10))
+
+
+
+TOPIC MODELING USING MAPPING OF INDEXES
+
+import pandas as pd
+
+
+text = [hassan,
+        "great game with a lot of amazing goals from both teams",
+        "goalkeepers from both teams made misteke",
+        "he won all four grand slam championchips",
+        "the best player from three-point line",
+        "Novak Djokovic is the best player of all time",
+        "amazing slam dunks from the best players",
+        "he deserved yellow-card for this foul",
+        "free throw points"]
+
+phrase = ["human-related || Motivatonal","goals", "goalkeepers", "grand slam championchips", "three-point line", "Novak Djokovic", "slam dunks", "yellow-card", "free throw points"]
+
+topic = ["motivation","football", "football", "tennis", "basketball", "tennis", "basketball", "football", "basketball"]
+
+df = pd.DataFrame({"text":text,
+                   "phrase":phrase,
+                   "topic":topic})
+
+print(df.text)
+print(df.phrase)
