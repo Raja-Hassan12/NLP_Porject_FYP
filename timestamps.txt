@@ -1,0 +1,12 @@
+# here we could use round() function but it would disintegrate exact values
+def Timestamps():
+    print('Starting Time: ', words[0][1])
+    for i in range(len(words)-1):
+        print(words[i][0], end =" ")
+        if(abs(words[i][1] - words[i+1][1])) > 1 :
+            print('\nEnding Time: ', words[i][2])
+            print('\nStarting Time: ', words[i+1][1])
+    print('\nEnding Time: ', words[i+1][2])
+    return Timestamps
+    
+Timestamps()
